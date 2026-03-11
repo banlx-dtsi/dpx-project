@@ -1,0 +1,22 @@
+plugins {
+	id 'com.axelor.app'
+}
+
+apply from: "../libs.gradle"
+apply from: "../version.gradle"
+
+apply {
+	version = openSuiteVersion
+}
+
+axelor {
+	title "DPX Purchase"
+	description "DPX Purchase Module"
+}
+ext.aosVersion = '9.0.4'
+dependencies {
+	api "com.axelor.apps:axelor-base:$aosVersion"
+
+	implementation libs.commons_lang3
+	implementation libs.swagger_jaxrs
+}
