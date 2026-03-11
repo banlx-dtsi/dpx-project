@@ -1,0 +1,1 @@
+import{f as t}from"./formatDistance-CgTttXGP.js";import{m as a,l as o,f as e}from"./match-C7IfcEiU.js";import{f as m}from"./formatLong-BRwz3snb.js";import"./buildMatchPatternFn-_eSDZv-o.js";const n={code:"en-IE",formatDistance:t,formatLong:m,formatRelative:e,localize:o,match:a,options:{weekStartsOn:1,firstWeekContainsDate:4}};export{n as default,n as enIE};
