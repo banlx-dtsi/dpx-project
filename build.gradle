@@ -50,7 +50,8 @@ allprojects {
 tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
 ext.aosVersion = '9.0.4'
 dependencies {
-  api "com.axelor.apps:axelor-base:$aosVersion"
+
+  implementation "com.axelor.apps:axelor-base:$aosVersion"
   gradle.appModules.each { dir ->
     implementation project(":modules:$dir.name")
   }
