@@ -13,10 +13,10 @@ axelor {
 	title "DPX Purchase"
 	description "DPX Purchase Module"
 }
-ext.aosVersion = '9.0.4'
-dependencies {
-	api "com.axelor.apps:axelor-base:$aosVersion"
 
+dependencies {
+	api "com.axelor.apps:axelor-base:9.0.4"
+	
 	implementation libs.commons_lang3
 	implementation libs.swagger_jaxrs
 }

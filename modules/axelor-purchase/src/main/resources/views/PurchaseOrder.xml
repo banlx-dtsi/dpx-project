@@ -342,9 +342,8 @@
         prompt="Warning, a completed order can't be changed anymore, do you want to continue?"
         showIf="statusSelect == 3"
         if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.allowFinishManuallyPurchaseOrder) || (!__config__.app.isApp('supplychain'))"
-        onClick="save,action-purchase-order-method-finish-purchase-order"
-        icon="person-check-fill" css="btn-warning"
-        readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
+        onClick="save,action-purchase-order-method-finish-purchase-order" icon="person-check-fill"
+        css="btn-warning" readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
       <button name="cancelBtn" title="Cancel" css="btn-danger" icon="x"
         showIf="statusSelect &lt;= 3  || invoice.statusSelect &lt;= 2"
         onClick="save,action-group-purchase-order-cancel"

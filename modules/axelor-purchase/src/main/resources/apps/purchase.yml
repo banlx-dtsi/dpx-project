@@ -9,5 +9,5 @@ image: app-purchase.png
 modules: 
    axelor-purchase
 dependsOn:
-   - axelor-base
+   - base
 sequence: 3

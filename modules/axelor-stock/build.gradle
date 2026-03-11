@@ -1,0 +1,23 @@
+plugins {
+	id 'com.axelor.app'
+}
+
+apply from: "../libs.gradle"
+apply from: "../version.gradle"
+
+apply {
+	version = openSuiteVersion
+}
+
+axelor {
+	title "DPX Stock"
+	description "DPX Stock Module"
+}
+
+dependencies {
+	api "com.axelor.apps:axelor-base:9.0.4"
+
+	implementation libs.commons_lang3
+	implementation libs.commons_collections4
+	implementation libs.swagger_jaxrs
+}
