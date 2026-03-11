@@ -155,7 +155,8 @@
           <viewer depends="statusSelect,purchaseOrderSeq"><![CDATA[
 	          <>
 	             <h3>
-	             	{[1,2,5].includes(statusSelect) && purchaseOrderSeq && <span>{_t('Quotation')} </span>}
+	             	{statusSelect == 1 && purchaseOrderSeq && <span>{_t('Draft')} </span>}
+	             	{statusSelect == 2 && purchaseOrderSeq && <span>{_t('Quotation')} </span>}
 	             	{[3,4].includes(statusSelect) && <span>{_t('Purchase order')} </span>}
 	             	{purchaseOrderSeq}
 	             </h3>
@@ -331,8 +332,8 @@
         if-module="axelor-supplychain" if="__config__.app.isApp('supplychain')"
         icon="file-earmark-fill"
         readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
-      <button name="requestedBtn" title="Requested" showIf="statusSelect == 1"
-        onClick="save,action-purchase-order-method-requested" icon="send"
+      <button name="requestedBtn" title="Validate" showIf="statusSelect == 1"
+        onClick="action-group-purchase-order-on-validate-actions" icon="check" css="btn-success"
         readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
       <button name="validateBtn" title="Validate" showIf="statusSelect == 2"
         onClick="action-group-purchase-order-on-validate-actions" icon="check" css="btn-success"
@@ -342,16 +343,16 @@
         showIf="statusSelect == 3"
         if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.allowFinishManuallyPurchaseOrder) || (!__config__.app.isApp('supplychain'))"
         onClick="save,action-purchase-order-method-finish-purchase-order"
-        if-module="axelor-supplychain" icon="person-check-fill" css="btn-warning"
+        icon="person-check-fill" css="btn-warning"
         readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
       <button name="cancelBtn" title="Cancel" css="btn-danger" icon="x"
         showIf="statusSelect &lt;= 3  || invoice.statusSelect &lt;= 2"
         onClick="save,action-group-purchase-order-cancel"
         readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
       <button name="backToValidatedBtn" title="Back to validated order"
-        showIf="statusSelect == 4" if-module="axelor-supplychain"
+        showIf="statusSelect == 4"
         onClick="save,action-purchase-order-method-set-status-to-validated"
-        if="__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.allowFinishManuallyPurchaseOrder"
+        if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.allowFinishManuallyPurchaseOrder) || (!__config__.app.isApp('supplychain'))"
         icon="reply-fill" readonlyIf="!purchaseOrderLineList || purchaseOrderLineList.length == 0"/>
       <button name="draftBtn" title="Draft" showIf="statusSelect == 5"
         onClick="save,action-purchase-order-method-draft,save" icon="reply-all-fill"
@@ -628,9 +629,11 @@
   </action-group>
 
   <action-group name="action-group-purchase-order-on-validate-actions">
-    <action name="action-purchase-order-method-check-analytic-distribution-template"/>
+    <action name="action-purchase-order-method-check-analytic-distribution-template"
+      if="__config__.app.isApp('account') &amp;&amp; __config__.app.isApp('supplychain')"/>
     <action name="action-purchase-order-validate-purchase-order-line"/>
-    <action name="action-purchase-order-validate-stock-location"/>
+    <action name="action-purchase-order-validate-stock-location"
+      if="__config__.app.isApp('supplychain')"/>
     <action name="save"/>
     <action name="action-purchase-order-method-validate"/>
   </action-group>
@@ -663,9 +666,11 @@
   </action-group>
 
   <action-group name="action-purchase-order-group-validate-changes">
-    <action name="action-purchase-order-method-check-analytic-distribution-template"/>
+    <action name="action-purchase-order-method-check-analytic-distribution-template"
+      if="__config__.app.isApp('account') &amp;&amp; __config__.app.isApp('supplychain')"/>
     <action name="action-purchase-order-validate-purchase-order-line"/>
-    <action name="action-purchase-order-validate-stock-location"/>
+    <action name="action-purchase-order-validate-stock-location"
+      if="__config__.app.isApp('supplychain')"/>
     <action name="save"/>
     <action name="action-purchase-order-method-validate-changes"/>
   </action-group>

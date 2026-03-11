@@ -70,7 +70,8 @@ public class PurchaseOrderWorkflowServiceImpl implements PurchaseOrderWorkflowSe
   public void validatePurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
 
     if (purchaseOrder.getStatusSelect() == null
-        || purchaseOrder.getStatusSelect() != PurchaseOrderRepository.STATUS_REQUESTED) {
+        || (purchaseOrder.getStatusSelect() != PurchaseOrderRepository.STATUS_DRAFT
+            && purchaseOrder.getStatusSelect() != PurchaseOrderRepository.STATUS_REQUESTED)) {
       throw new AxelorException(
           TraceBackRepository.CATEGORY_INCONSISTENCY,
           I18n.get(PurchaseExceptionMessage.PURCHASE_ORDER_VALIDATE_WRONG_STATUS));
