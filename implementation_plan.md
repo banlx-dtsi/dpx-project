@@ -48,3 +48,53 @@ The simplified flow will be: **Draft -> Validated (PO)**.
     *   Fill in details and click the newly renamed "Validate" button.
     *   Verify the status changes directly to "Validated".
 3.  **Check Grid**: Verify that the newly created Draft order is visible in the "Purchase orders" list.
+
+# Cumulative Implementation Plan: Project Refactoring & Quality Removal
+
+This plan documents the full scope of work performed in this session, covering the initial module fixes and the subsequent removal of all Quality-related features.
+
+---
+
+## Phase 1: Module Fixes & Integration
+
+### [axelor-account] [NEW]
+- Created `build.gradle` to define dependencies for the new Account module.
+
+### [axelor-production]
+- Updated `build.gradle` to include internal dependencies:
+  - `axelor-sale`
+  - `axelor-stock`
+  - `axelor-purchase`
+  - `axelor-crm`
+  - `axelor-account`
+  - `axelor-supplychain`
+
+---
+
+## Phase 2: Quality Feature Removal
+
+### [axelor-production]
+Summary: Remove all traces of Quality integration to ensure module independence.
+
+#### [DELETE]
+- Domains: `QIIdentification.xml`, `QualityAlert.xml`, `ControlEntryPlanLine.xml`
+- Views: `QualityAlert.xml`, `QualityImprovement.xml`
+- Services: `QIIdentificationProductionServiceImpl`, `QualityImprovementCheckValuesProductionServiceImpl`, `QualityImprovementUpdateProductionServiceImpl`, `QualityImprovementParseProductionServiceImpl`.
+
+#### [MODIFY] [production.yml](file:///home/banlx/axelor/dpx-project/modules/axelor-production/src/main/resources/apps/production.yml)
+- Removed `quality` from `dependsOn`.
+
+#### [MODIFY] [ProductionModule.java](file:///home/banlx/axelor/dpx-project/modules/axelor-production/src/main/java/com/axelor/apps/production/module/ProductionModule.java)
+- Removed Quality service bindings and imports.
+
+#### [MODIFY] XML Views
+- Removed `qualityPanel` and related Control Entry/Plan actions from:
+  - `ManufOrder.xml`
+  - `OperationOrder.xml`
+  - `ProdProcessLine.xml`
+- Refactored `TradingName.xml` to remove field-level dependency on Quality module.
+
+## Verification Plan
+
+### Automated Build
+- Run `./gradlew :modules:axelor-production:build -x test` to verify complete independence.

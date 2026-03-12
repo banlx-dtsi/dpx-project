@@ -38,3 +38,35 @@ To verify these changes:
 - **Xử lý ngoại lệ Module**: Khi gọi controller của module khác (như `supplychain`), luôn sử dụng các thuộc tính `if-module` hoặc kiểm tra `isApp()` trong XML để tránh lỗi `ClassNotFoundException` nếu module đó không được cài đặt.
 - **Dữ liệu Demo**: Các thay đổi về menu trong XML cần được đồng bộ với dữ liệu khởi tạo (`meta_metaMenu.csv`) để tránh lỗi khi người dùng thực hiện Import Demo Data.
 - **Độ chính xác trong Build Gradle**: Một lỗi nhỏ về cú pháp (như dư dấu nháy) trong `build.gradle` có thể làm hỏng toàn bộ quá trình xây dựng của project.
+
+# Walkthrough - Cumulative Project Refactoring
+
+This document summarizes the full journey of refactoring and module management performed in this session.
+
+## 1. Initial Module Integration
+- **Account Module**: Initialized the `axelor-account` module with a complete `build.gradle` configuration.
+- **Production Dependencies**: Fixed the `axelor-production` module's build configuration to correctly link with `sale`, `crm`, `purchase`, `stock`, `account`, and `supplychain` modules.
+- **Build Verification**: Resolved initial compilation issues arising from missing module linkages.
+
+## 2. Quality Feature Removal
+After an initial exploration of Quality integration, the decision was made to remove all Quality-related features from the production module to maintain independence.
+
+### Logic & Dependencies
+- **Module Configuration**: `production.yml` now depends on `base` instead of `quality`.
+- **Service Bindings**: `ProductionModule.java` was cleaned of all Quality-related service injections and Guice bindings.
+- **Stock Move Logic**: `StockMoveServiceProductionImpl.java` was refined to ensure it doesn't leak Quality-module dependencies while maintaining core supply chain functionality.
+
+### UI & Domain Cleanup
+- **Deleted Files**: Removed all domain models and views that were previously merged from the Quality module.
+- **View Refactoring**:
+  - Cleaned `ManufOrder.xml`, `OperationOrder.xml`, and `ProdProcessLine.xml` of all Quality tabs and action buttons.
+  - Refactored `TradingName.xml` extension logic to ensure it targets stable Base fields instead of Quality-specific fields.
+
+## 3. Final Verification
+The final state of the project was verified with a full module build:
+```bash
+./gradlew :modules:axelor-production:build -x test
+```
+**Status**: `BUILD SUCCESSFUL`
+
+The project now has a robust module structure with clear boundaries and no unexpected dependencies on the Quality module.
